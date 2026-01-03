@@ -1,0 +1,907 @@
+Delivered-To: johan.cosemans@lab900.com
+Received: by 2002:a05:7301:fab:b0:2ad:2294:233d with SMTP id mi43csp1061742dyb;
+        Sun, 14 Dec 2025 11:24:22 -0800 (PST)
+X-Received: by 2002:a05:6808:6c93:b0:450:4782:2b0e with SMTP id 5614622812f47-455ac82a88fmr4082866b6e.15.1765740262233;
+        Sun, 14 Dec 2025 11:24:22 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1765740262; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LktALsH5MCm7fbgG19FxoamEvJNPgBrx6WtbH16v7j/kXSFpyZrncojrTCiepENbJI
+         ywJxGYWDHiAJW4vwNimCmpclKvHpLLgE/Ik8F5/vS9ZX757FrZLKx3ZWWZpLkPtvVUbG
+         WW5yoFXvezijApr6RmXPu95PKgV6U8t54tVpopG2seF9YwGZhFLePpZxMAJGWvD/1Z6k
+         Y2mGvFrlw9Du8QwzyOlzRxJ7uo5EVvzNpc93iPCktlq2Qdi0BAPeGcIFg5dLED4TAPlX
+         pjDdx9HXoqR/aVlN/FUNR4Wj9ueh23GpHa4hXu10Bp7qpEc1OiJaPdcBTXAomDq33WuV
+         3qnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:from:subject:message-id:gmsai:feedback-id:reply-to:date
+         :mime-version:dkim-signature;
+        bh=lcVeHwSeJ3BQkhYNzjgbJRqOimGCgVIFKQX8WALwt+I=;
+        fh=KwCqQ9fWsaLP5vsMQ1R9PA9MKIUlynhnfWYxjIuKzFA=;
+        b=W1VetwBnwp1Hj+r37HgyRIAOk7ZyBDKzKXQoxDpQPk4eBLnAIP8gT6oCzK1hjTObPX
+         d8cWqAE8GmqE4mXvLVnnRFqAhfike24SiD2oIzBN5dbrhjgeY3evyEf4Wj/PsDGu6Vmn
+         QgtWt9t+nhY7zL0tHXQmwOY5GXHmj/BSJ7mbrq/bEnyCDAUF2M/F1lRutWayiVvorQN5
+         PiKL87TX29BfMD/Ld/eiKa56vEJaVIyIubxrUecYS12MayoNjWpaGA38utIOSz4tdJcU
+         Y3fad3xSjvwzBPGTo4V+BUposQCQCM53EPIamU8t26N1KmxN41whmgby3SUvYQSvYN1u
+         Cdiw==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@google.com header.s=20230601 header.b="QDz/EgjH";
+       spf=pass (google.com: domain of 35q4_arekdlae692a7suw-569w73gy66y3w.u6416zs5.u6aw4s5a3strii.u64@scoutcamp.bounces.google.com designates 209.85.220.69 as permitted sender) smtp.mailfrom=35Q4_aREKDlAE692A7suw-569w73Gy66y3w.u6416zs5.u6Aw4s5A3stRII.u64@scoutcamp.bounces.google.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=google.com;
+       dara=neutral header.i=@lab900.com
+Return-Path: <35Q4_aREKDlAE692A7suw-569w73Gy66y3w.u6416zs5.u6Aw4s5A3stRII.u64@scoutcamp.bounces.google.com>
+Received: from mail-sor-f69.google.com (mail-sor-f69.google.com. [209.85.220.69])
+        by mx.google.com with SMTPS id 5614622812f47-45597552e7csor2335346b6e.10.2025.12.14.11.24.22
+        for <johan.cosemans@lab900.com>
+        (Google Transport Security);
+        Sun, 14 Dec 2025 11:24:22 -0800 (PST)
+Received-SPF: pass (google.com: domain of 35q4_arekdlae692a7suw-569w73gy66y3w.u6416zs5.u6aw4s5a3strii.u64@scoutcamp.bounces.google.com designates 209.85.220.69 as permitted sender) client-ip=209.85.220.69;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@google.com header.s=20230601 header.b="QDz/EgjH";
+       spf=pass (google.com: domain of 35q4_arekdlae692a7suw-569w73gy66y3w.u6416zs5.u6aw4s5a3strii.u64@scoutcamp.bounces.google.com designates 209.85.220.69 as permitted sender) smtp.mailfrom=35Q4_aREKDlAE692A7suw-569w73Gy66y3w.u6416zs5.u6Aw4s5A3stRII.u64@scoutcamp.bounces.google.com;
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=google.com;
+       dara=neutral header.i=@lab900.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1765740262; x=1766345062; darn=lab900.com;
+        h=to:from:subject:message-id:gmsai:feedback-id:reply-to:date
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lcVeHwSeJ3BQkhYNzjgbJRqOimGCgVIFKQX8WALwt+I=;
+        b=QDz/EgjHz8hrejsx2BGYiyt3kaTXf3wqwmFsFIbIKAvoZnJwUSB6b9+iz2hvyp8ZzL
+         /71c5Xpj/3WIN6xaLKbd8+OGzoTVQ+mDw6INFvDrpQyXzmOC0+IXztq4gIfkagF9YZEU
+         Y0JXPTgKCo9ZcGkC7ihfzNc+e1Q+htj0cULI0+Uv+UNYRx5klJMchvZRMrqid7kAUpTN
+         9vciirRGH6qtzufbFD6YJlrngr1v3pO/YLonCcod64SY9wev2SnA4IHNhweq2PXBrnQV
+         2ApP9aDjAclsXIDhFrpOZFlwrWI70f6udr4c6dYYKLy+NpfP9Jfn6SzoaTThkak4j43m
+         2mxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765740262; x=1766345062;
+        h=to:from:subject:message-id:gmsai:feedback-id:reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lcVeHwSeJ3BQkhYNzjgbJRqOimGCgVIFKQX8WALwt+I=;
+        b=iKZPPgrZ3YSXo6ym+FuGUXVsAEbLapXk2WCL46MCj0NdmQYZzhuTxy06hYTDnhf6b5
+         sqD6PeYqvRMjS3v6vnLWDjnikU/G3nQKK+TILFLykzIbU4eeq/1l+g9LttEPMQzJIYKx
+         0zO0oJRYRxrKzc/LX7dvt06DVu4P3TuEXXhmDf94SHDrOmZR+viJJORx+KoLjCzSXnCk
+         E9H4hAQzZOwCrMY7bhpddEh/C1mESTMzcODY9Cpbv6E+jMQiUxY3QSvkExN6RLD1ptxk
+         2ItDTvY9HLe9FMv+nXQ1lDQdih3IPwQo3aA5ubKvbg8krEJQYW7ce/XuBIsnBqJ/5RGh
+         Jg7g==
+X-Gm-Message-State: AOJu0YyBcCPdXZycMSbowdF74vxJJe2ELrU1rd6ZO6dVuH/ZsoKTmlDW
+	zYebTFLkuYLF2LGuJEtaZdqjaPR7uXbFUEMIdP4MpQ9Ia2c654HLnm7Ezo1Y
+X-Google-Smtp-Source: AGHT+IE/9385PryK0PmLTzOSYe3yY8Hd2YoQy0ad6w8dCTwTWZmK/vXtwb4fSV2dkvSsBbvLq7yP+YA=
+MIME-Version: 1.0
+X-Received: by 2002:a05:6820:1989:b0:659:9a49:8df0 with SMTP id
+ 006d021491bc7-65b45225e8dmr3821938eaf.50.1765740261882; Sun, 14 Dec 2025
+ 11:24:21 -0800 (PST)
+Date: Sun, 14 Dec 2025 11:24:21 -0800
+Reply-To: workspace-noreply@google.com
+X-Google-Id: 4346964
+Feedback-ID: P-11-0:C20314573:M111008497-en:gamma
+gmsai: true
+X-Notifications: 9c90e44894a60000
+X-Notifications-Bounce-Info: Ae2mSnwN9GSP1Sj2B8USdGedvqbIgx9jHm8B9itsOfNqZv5gGo12HnOEkrkTKNJIH5UwVBp0L3sytD4kNMd_fxm6ncHcZpSuXNbmFJflTjQinQ-EspCTXHcxs7wHN-zMLIvUzHa98jSysRjMf-gDQDJev80xzEN02qx0zuCi9-wjp7ptVJKrMdRWKZFssniqO41N9L4y3EBvIAxQ6EkWk2Pnegxkx8t3heBKjf6NuZug2O8GDi5SjBO5WhKE05CwSC5syINSYXTrLScllxdxi6TeHvJ8M-zhF_Qw2MdLZIR2RiTOhf2QdZPUU2d3UfAvOek42um-KqeyhyD7hL7303QUCgrgyzJtZftNawP5rS0AI1P0Ud_RVFVX9Ac2IESA8kHRJSpPOzmS-lTAG5T15-Vrjew0K2HNaCEJmSihQtpp-bbCKb4wdC1vvISY9Twiremgxlcc9L5PQhqsHbTFoI2MH4F_hAHO9y5Ihcy9HA1EinzR-wgO_5LKhce7DS9me-H71fkvFmQ-I3Z6Z2pcU-u7OXfQHdAf7r-BfNazDjMX0bgTGzF0JY6S2IVNTYp8GDsAqwNjAwNjA0MDQxNTM1NTk2OTMzMg
+Message-ID: <5281e4904f79bc60dc3964bcff1652008cf874be-20314573-111615925@google.com>
+Subject: Regarding your account: Fix potential security issues
+From: The Google Workspace Team <workspace-noreply@google.com>
+To: johan.cosemans@lab900.com
+Content-Type: multipart/alternative; boundary="000000000000133a2f0645ee7179"
+
+--000000000000133a2f0645ee7179
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+
+Google Workspace
+
+We found some security gaps for your organization
+
+Review the latest issues we found below. Take action now to better protect  
+your organization, with just a few clicks.
+
+Review & take action  
+<https://c.gle/ANnMTcbtDAd11UeSvQPXx_ZkaKKXz5WTC5i3zWbvtx0FOzWJe7ZO22f08bux-qnKqdXyEbx0nXyBSESNGENa_gPuzeMM32F6PzGHXhBzHsXjnc2hWRpbUD8NGcYaE9XFWs3ZaJzrYzAFG_loXOsWsQAh7GdlPXKZzWrKvBVuDeCG4riR_PKt9DHl1un8cn8x3TkKe_euQMMObe94ImNbI0Az66DrAK-7nX-X71eYHQ09>
+
+
+In just a week, Workspace orgs like yours detected 149K+ phishing emails  
+with enhanced security
+
+Why you should care
+
+Phishing is one of the top ways bad actors intrude and steal data
+
+
+Check options for improving data protection
+
+
+Enhance app access protections
+
+
+Improve account security
+
+
+All users turned on 2SV for their accounts
+
+Google Workspace
+
+Google LLC 1600 Amphitheatre Parkway, Mountain View, CA 94043
+
+This email was sent to you to share insights for improving your business'  
+security. If you don't want to receive such emails in the future, you can  
+update your communication preference  
+<https://c.gle/ANnMTcYQ4b-_kZG4Q3Rdc9cWM6kdIHgBCXaCorb7519uaP8FBywoh3VcJ84m1WB6OPhV1e3q6qxgiM21HODHZJ0zH13Rp17F8zdfzPOB1Ho6BbmtKOMw9PrJhrSr4nuMWXC99yLEcD6IqCS1RGvnxN65Jdy7Wh1wC68-ZQMQT7Lauuf9mvjpdm6kasjYp5CqBfY>  
+in the Admin console.
+
+
+--000000000000133a2f0645ee7179
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+ =20
+ =20
+
+=20
+ =20
+
+=20
+
+=20
+ =20
+  =20
+
+
+=20
+
+ =20
+   =20
+   =20
+ =20
+
+
+  =20
+
+=20
+   =20
+   =20
+   =20
+
+=20
+
+
+
+
+ =20
+ =20
+
+
+
+  =20
+
+
+
+
+ =20
+ =20
+
+
+
+
+
+
+
+
+=20
+
+ =20
+   =20
+   =20
+ =20
+  =20
+
+=20
+   =20
+   =20
+   =20
+
+=20
+ =20
+=20
+
+
+
+
+
+<!-- render Risk -->
+
+
+<!-- risk name macro -->
+
+<!-- risk color macro -->
+
+<!-- risk A names -->
+
+<!-- risk B names -->
+
+
+
+
+<!-- risk C names -->
+
+<!-- risk D names -->
+
+<!-- risk E names -->
+ =20
+ =20
+
+=20
+
+
+
+
+  =20
+
+=20
+<!DOCTYPE html>
+<html dir=3D"" , lang=3Den>
+
+<head>
+    <meta http-equiv=3DContent-Type content=3D"text/html; charset=3DUTF-8">
+    <meta name=3Dviewport content=3Dwidth=3Ddevice-width,initial-scale=3D1.=
+0,user-scalable=3Dyes>
+    <title>Fix potential security issues</title>
+  <style>
+  	.contact a {
+  		color:#1967D2 !important;
+  		text-decoration:underline!important;
+	}
+    .appleLinks a {
+      	color:#3C4043;
+      	text-decoration:none;
+    }
+@media screen and (max-width:786px) {
+ .dynamic_point{
+    width: 100% !important;
+    max-width: 404px !important;
+  }
+  .lrpd1 {
+    width:100% !important;
+    display: block;
+    text-align:center !important;
+  }
+    .flexible {
+    width: 100% !important;
+    max-width: 600px !important;
+  }
+    .props_space {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+
+
+}
+@media screen and (max-width:737px) {
+  .mob_landscape{
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .dynamic_point{
+    width: 100% !important;
+    max-width: 373px !important;
+  }
+    .dynamic_point_high{
+   =20
+    max-width: 355px !important;
+  }
+  .flexible {
+    width: 100% !important;
+    max-width: 600px !important;
+  }
+  .body {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+  }
+  .webkit {
+    width: 100% !important;
+  }
+  .lrpd1 {
+    width:100% !important;
+    display: block;
+  }
+  .props_space {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+  .mob_br_none{
+    display: none !important;
+  }
+
+}
+  @media screen and (max-width:432px) {
+    .high_addon_data{
+      width:50% !important;
+      padding-left:18px !important;
+    }
+     .high_addon{
+      width:40% !important;
+    }
+   =20
+    .no_insight{
+       padding-left:2px !important;
+    }
+    .dynamic_point{
+     vertical-align: text-top !important;
+    width: 100% !important;
+    max-width: 100% !important;
+      padding-left:16px !important;
+      padding-top:0px !important;
+  }
+    .valign_high{
+      vertical-align: top !important;
+    }
+    .dynamic_point_high{
+      vertical-align: text-top !important;
+    width: 94% !important;
+    max-width: 94% !important;
+      padding-top:0px !important;
+    =20
+  }
+    .main_heading {
+      padding-left: 0px !important;
+      padding-right: 0px !important;
+    }
+   .flexible {
+    width: 100% !important;
+    max-width: 600px !important;
+  }
+
+  .body {
+    padding-left: 0px !important;
+    padding-right: 0px !important
+  }
+    .bigger_wrapper_body {
+      padding-left:15px !important;
+      padding-right:15px !important;
+    }
+
+    .footer_wrapper_td {
+      padding-left:25px !important;
+      padding-right:25px !important;
+    }
+    .ru_span{
+      white-space:normal !important;
+    }
+}
+
+  @media screen and (max-width:432px) {
+
+    .bigger_wrapper_body {
+      padding-left:15px !important;
+      padding-right:15px !important;
+    }
+
+
+}
+@media screen and (min-width: 812px) and (max-width: 812px),
+screen and (min-width: 736px) and (max-width: 736px),
+screen and (min-width: 667px) and (max-width: 667px),
+screen and (min-width: 568px) and (max-width: 568px),
+screen and (min-width: 414px) and (max-width: 414px),
+screen and (min-width: 375px) and (max-width: 375px),
+screen and (min-width: 320px) and (max-width: 320px) {
+  .body {
+    min-width: 100vw !important;
+  }
+}
+  </style>
+
+
+
+</head>
+
+<body class=3Dbody bgcolor=3D#f1f3f4 style=3D"-ms-text-size-adjust:100%; -w=
+ebkit-text-size-adjust:100%; border:0; background-color: #f1f3f4; font-fami=
+ly:Google Sans, Roboto, Arial; font-weight:normal; margin:0; padding:0; wid=
+th:100%; box-sizing: border-box;" width=3D100%>
+         <div class=3Dwebkit bgcolor=3D#f1f3f4 style=3D"margin:0 auto; padd=
+ing-top:44px; padding-bottom:44px; background-color: #f1f3f4;">
+           <div style=3D"height:0px; font-size:0px; max-height:0px; min-hei=
+ght: 0px; line-height:0px; width: 100%; color: #fff; display:none;">Take ac=
+tion now for better protection.</div>
+      <section>
+         <!--[if mso]>
+        <table role=3D"presentation" class=3D"bigger_wrapper flexible" widt=
+h=3D"600" align=3D"center" cellspacing=3D"0" cellpadding=3D"0" border=3D"0"=
+ style=3D"-premailer-cellpadding:0; -premailer-cellspacing:0; border-collap=
+se:collapse; font-family:Google Sans, Roboto, Arial; font-weight:normal; ma=
+rgin:44px auto 44px auto; width:600px; max-width:600px; mso-table-lspace:0;=
+ mso-table-rspace:0;">
+<![endif]-->
+
+                                <!--[if !mso]> <!---->
+	<table role=3Dpresentation class=3D"bigger_wrapper flexible" width=3D600 c=
+ellspacing=3D0 cellpadding=3D0 border=3D0 style=3D"-premailer-cellpadding:0=
+; -premailer-cellspacing:0; border-collapse:collapse; font-family:Google Sa=
+ns, Roboto, Arial; font-weight:normal; margin:0px auto 0px auto; width:600p=
+x; max-width:600px; mso-table-lspace:0; mso-table-rspace:0;">
+      <!-- <![endif]-->
+=20
+
+  <tr>
+            <td class=3D"bigger_wrapper_header flexible" style=3D"border-co=
+llapse:collapse; margin:0; max-width:600px;">
+
+                <table role=3Dpresentation width=3D600 class=3D"header_wrap=
+per flexible" cellspacing=3D0 cellpadding=3D0 border=3D0 style=3D"-premaile=
+r-cellpadding:0; -premailer-cellspacing:0; border-collapse:collapse; margin=
+:0 auto; mso-table-lspace:0; mso-table-rspace:0; width:600px">
+                    <tr>
+                        <td style=3D"border-collapse:collapse; background-c=
+olor:#ffffff;">
+
+                           <table role=3Dpresentation width=3Dauto class=3D=
+logo_holder align=3Dcenter cellspacing=3D0 cellpadding=3D0 border=3D0 style=
+=3D"-premailer-cellpadding:0; -premailer-cellspacing:0; border-collapse:col=
+lapse; mso-table-lspace:0; mso-table-rspace:0; width:auto">
+                                <tr>
+                                    <td class=3Dlogo_holder_td style=3D"bor=
+der-collapse:collapse; padding-bottom:10px; padding-top:25px; padding-left:=
+0px;">
+                                      <img src=3Dhttp://services.google.com=
+/fh/files/emails/gw_header-logo.png width=3D175 alt=3D"Google Workspace" st=
+yle=3D"-ms-interpolation-mode:bicubic; outline:none; text-decoration:none">
+                                    </td>
+                                </tr>
+                            </table>
+
+
+
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+          =20
+<tr>
+  <td class=3D"bigger_wrapper_header flexible" style=3D" margin:0; max-widt=
+h:600px;">
+  <table dir=3Dltr role=3Dpresentation bgcolor=3D#ffffff border=3D0 cellpad=
+ding=3D0 cellspacing=3D0 width=3D100% style=3D"border-radius: 3px; backgrou=
+nd-color:#ffffff; max-width:600px;direction: ltr;">
+  <tr>
+      <td class=3D"bigger_wrapper_body flexible" width=3D100% style=3D"marg=
+in:0; padding-top:0px; padding-bottom:4px; background-color:#ffffff; paddin=
+g-left:48px;padding-right:48px;">
+      <table dir=3Dltr role=3Dpresentation width=3D500 class=3Dflexible cel=
+lpadding=3D0 cellspacing=3D0 border=3D0 style=3D"width:500px; max-width:500=
+px;">
+
+<tr>
+<td dir=3Dltr class=3D"flexible main_heading headline" style=3D"border-coll=
+apse:collapse; color:#1F1F1F; font-family:Google Sans,Roboto,Arial; font-si=
+ze:28px; font-weight:400; line-height:36px; text-align:center; padding-bott=
+om: 0px; padding-top: 0px; padding-left:0px; padding-right:0px;direction:lt=
+r;">
+We found some security gaps for your organization
+</td>
+</tr>
+<tr>
+<td dir=3Dltr class=3D"flexible main_heading headline" style=3D"border-coll=
+apse:collapse; color:#444746; font-family:Google Sans,Roboto,Arial; font-si=
+ze:14px; font-weight:400; line-height:20px; text-align:center; padding-bott=
+om: 0px; padding-top: 8px; padding-left:0px; padding-right:0px;direction:lt=
+r;">
+Review the latest issues we found below. Take action now to better protect =
+your organization, with just a few clicks.
+</td>
+</tr>
+  <tr>
+     <td id=3Douter_cover align=3Dcenter style=3D"border-radius:100px; font=
+-family:Roboto, arial; font-weight:normal; padding-top:24px;padding-bottom:=
+0px;">
+    <table role=3Dpresentation class=3Dbluecta style=3D"margin: auto; -moz-=
+border-radius:3px; -premailer-cellpadding:0; -premailer-cellspacing:0; -web=
+kit-border-radius:3px; border-collapse:collapse; border-radius:100px; color=
+:#0B57D0; font-family:Google Sans,Arial; font-weight:500; mso-table-lspace:=
+0; mso-table-rspace:0;text-align:center;" height=3D40 align=3Dcenter bgcolo=
+r=3D#0B57D0 cellpadding=3D0 cellspacing=3D0> =20
+    <tr>
+      <!--[if mso 16]>
+           <td>
+<![endif]-->
+<!--[if !mso]><!-->
+           <td><!--<![endif]-->
+  =20
+		<a style=3D"-khtml-border-radius:2px; -moz-border-radius:3px; -moz-border=
+-radius-bottomleft:0; -moz-border-radius-bottomright:3px; -moz-border-radiu=
+s-topleft:0; -moz-border-radius-topright:3px; -ms-border-radius:2px; -o-bor=
+der-radius:2px; -webkit-border-bottom-left-radius:3px; -webkit-border-botto=
+m-right-radius:3px; -webkit-border-radius:3px; -webkit-border-top-left-radi=
+us:0; -webkit-border-top-right-radius:100px; background-color:#0B57D0; bord=
+er-bottom-left-radius:100px; border-bottom-right-radius:100px; border-color=
+:#0B57D0; border-radius:100px; border-style:solid; border-top-left-radius:1=
+00px; border-top-right-radius:100px; color:#ffffff; display:inline-block; f=
+ont-family:Google Sans, Arial; font-size:14px; font-weight:400; line-height=
+:20px; margin:0; mso-hide:all; text-decoration:none; letter-spacing: 0.5px;=
+ mso-padding-alt: 9px 30px;" target=3D_blank target=3D_blank href=3Dhttps:/=
+/c.gle/ANnMTcbYlfwo2LMaXjOqC_BOe5H-Y5SaaULUJ225renJEBGVtCdCI24WuR1BpTSzAbOF=
+LwQH7yGd48bj9_f7KCZlPPFmzRL_L6sUHx0dQhz5XOY-HhlbYb2ZAnqGduZwHyRbiNdfVCXFS73=
+oDdEEsNlqW3LJcso3BU3XULaGWrXO8latzyjbRyH1dF2qlJPw_W7CDURpnSz7jh7vSRuFjBNoGR=
+w_e1dyWkWa9fpGv2RnXPU bgcolor=3D#0B57D0>
+         <span dir=3Dltr style=3D"-webkit-text-size-adjust: none; display: =
+block;padding-left:24px; padding-right:24px; padding-top:13px; padding-bott=
+om:13px;direction:ltr;">Review & take action</span>
+         </a>
+     </td>
+
+   </tr>
+</table>
+     </td>
+ </tr>
+
+<tr>
+  <td class=3Dparatxt_td style=3D"border-collapse:initial;padding-top:0px; =
+padding-bottom:46px;">
+    <table dir=3Dltr role=3Dpresentation width=3D500 cellspacing=3D0 cellpa=
+dding=3D0 border=3D0 margin=3D0 padding=3D0 style=3D"font-weight:500;font-f=
+amily: google sans,Roboto, arial;padding-top:20px;width:100%; premailer-cel=
+lpadding:0; -premailer-cellspacing:0; border-collapse:collapse; mso-table-l=
+space:0; mso-table-rspace:0; text-align:left;">
+
+
+
+
+
+
+
+
+
+
+<tr class=3Drisk_main><td style=3D"mso-padding-top-alt:16px;width:100%; max=
+-width:500px; margin: 0px;padding: 0px;">
+<table role=3Dpresentation cellpadding=3D0 cellspacing=3D0 role=3Dpresentat=
+ion class=3Dmob_landscape style=3D"font-size:16px;mso-padding-top-alt:16px;=
+mso-margin-top-alt:0px;width:100%; max-width:500px;background: #F0F4F9; mar=
+gin-top:16px; border-radius:16px; padding: 16px 16px 16px 23px; ">
+  <tr>
+
+
+  <td style=3D"width: 24px; border-radius: 50%; height: 24px; vertical-alig=
+n:middle;text-align:center;">
+    <table role=3Dpresentation class=3Dhigh_risk_bg cellpadding=3D0 cellspa=
+cing=3D0 style=3D"font-size:16px;mso-padding-top-alt:0px;mso-padding-bottom=
+-alt:0px;mso-padding-left-alt:0px;mso-padding-right-alt:5px;mso-margin-top-=
+alt:0px;width:100%; max-width:500px;background: #F0F4F9; margin-top:0px; bo=
+rder-radius:16px; padding: 0px; ">
+=20
+    <tr>
+      <td style=3D"width: 32px; border-radius: 50%; display: inline-block; =
+height: 32px; vertical-align:middle;text-align:center;">
+      <img src=3Dhttps://services.google.com/fh/files/emails/high_sguard.pn=
+g width=3D32 alt=3D"" style=3D"-ms-interpolation-mode:bicubic; outline:none=
+; text-decoration:none; padding-top:0px;">
+      </td></tr>
+    </table>
+  </td>
+
+
+<td dir=3Dltr class=3Ddynamic_point_high style=3D"direction:ltr;font-family=
+:Google Sans, Roboto, Arial;mso-padding-left-alt:0px;padding-left:20px;colo=
+r:#1F1F1F;width:100%; vertical-align:top;text-align:left;line-height:24px;p=
+adding-top:4px;"><span style=3D"color: #B3261E; padding-left:0px;vertical-a=
+lign:bottom;"></span>
+ =20
+ In just a week, Workspace orgs like yours detected 149K+ phishing emails w=
+ith enhanced security
+</td>
+</tr>
+</table></td></tr>  <tr style=3D"margin: 0; padding: 0;">
+      <td>
+        <table role=3Dpresentation width=3D100% cellspacing=3D0 cellpadding=
+=3D0 style=3D"width: 100%; height: 48px; padding: 0 16px 0 24px;" class=3Do=
+utlook-table>
+          <tr>
+              <!--[if gte mso 9]>
+          <td>
+
+            <table role=3D"presentation" width=3D"100%" bgcolor=3D"#f6fbff"=
+ color =3D"#C2E7FF" cellspacing=3D"0" cellpadding=3D"0" style=3D"bacground-=
+color:#f6fbff; border-radius: 16px; border-top-left-radius: 4px; border-top=
+-right-radius: 4px; padding: 8px 24px;" class=3D"outlook-table">
+                <tr>
+                  <td valign=3D"top" color=3D"#00639B" class=3D"high_addon"=
+ style=3D"color: #00639B; font-size: 11px; font-family:Google Sans, Roboto,=
+ Arial; font-weight: 700; line-height: 16px; letter-spacing: 0.10px; width:=
+31%; vertical-align:top">
+                    Why you should care
+                  </td>
+               =20
+                  <td class=3D"high_addon_data" color=3D"#00639B" style=3D"=
+color: #00639B; font-size: 12px; font-family:Google Sans, Roboto, Arial; fo=
+nt-weight: 400; line-height: 16px; letter-spacing: 0.10px; width:69%;">
+ =20
+
+Phishing is one of the top ways bad actors intrude and steal data
+ =20
+                  </td>
+                </tr>
+              </table>
+              </td>
+           <![endif]-->
+					<!--[if !mso]><!-->
+              <td role=3Dpresentation width=3D100% bgcolor=3D#f6fbff color=
+=3D#C2E7FF cellspacing=3D0 cellpadding=3D0 style=3D"bacground-color:#f6fbff=
+; border-radius: 16px; border-top-left-radius: 4px; border-top-right-radius=
+: 4px;" class=3Doutlook-table>
+              <table role=3Dpresentation width=3D100% bgcolor=3D#f6fbff col=
+or=3D#C2E7FF cellspacing=3D0 cellpadding=3D0 style=3D"bacground-color:#f6fb=
+ff; border-radius: 16px; border-top-left-radius: 4px; border-top-right-radi=
+us: 4px; padding: 8px 24px;" class=3Doutlook-table>
+                <tr>
+                  <td valign=3Dtop color=3D#00639B class=3Dhigh_addon style=
+=3D"color: #00639B; font-size: 11px; font-family:Google Sans, Roboto, Arial=
+; font-weight: 700; line-height: 16px; letter-spacing: 0.10px; width:31%; v=
+ertical-align:top">
+                    Why you should care
+                  </td>
+               =20
+                  <td class=3Dhigh_addon_data color=3D#00639B style=3D"colo=
+r: #00639B; font-size: 12px; font-family:Google Sans, Roboto, Arial; font-w=
+eight: 400; line-height: 16px; letter-spacing: 0.10px; width:69%;">
+
+    =20
+
+Phishing is one of the top ways bad actors intrude and steal data
+ =20
+                  </td>
+                </tr>
+              </table>
+            </td><!--<![endif]-->
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+
+
+
+
+
+
+
+<tr class=3Drisk_main><td style=3D"mso-padding-top-alt:16px;width:100%; max=
+-width:500px; margin: 0px;padding: 0px;">
+<table role=3Dpresentation cellpadding=3D0 cellspacing=3D0 role=3Dpresentat=
+ion class=3Dmob_landscape style=3D"font-size:16px;mso-padding-top-alt:16px;=
+mso-margin-top-alt:0px;width:100%; max-width:500px;background: #F0F4F9; mar=
+gin-top:16px; border-radius:16px; padding: 16px 16px 16px 23px; ">
+  <tr>
+
+
+  <td style=3D"width: 24px; border-radius: 50%; height: 24px; vertical-alig=
+n:middle;text-align:center;">
+    <table role=3Dpresentation class=3Dhigh_risk_bg cellpadding=3D0 cellspa=
+cing=3D0 style=3D"font-size:16px;mso-padding-top-alt:0px;mso-padding-bottom=
+-alt:0px;mso-padding-left-alt:0px;mso-padding-right-alt:5px;mso-margin-top-=
+alt:0px;width:100%; max-width:500px;background: #F0F4F9; margin-top:0px; bo=
+rder-radius:16px; padding: 0px; ">
+=20
+    <tr>
+      <td style=3D"width: 32px; border-radius: 50%; display: inline-block; =
+height: 32px; vertical-align:middle;text-align:center;">
+              <img src=3Dhttps://services.google.com/fh/files/emails/mid_sg=
+uard.png width=3D32 alt=3D"" style=3D"-ms-interpolation-mode:bicubic; outli=
+ne:none; text-decoration:none; padding-top:0px;">
+      </td></tr>
+    </table>
+  </td>
+
+<td dir=3Dltr class=3Ddynamic_point style=3D"mso-padding-left-alt:0px;direc=
+tion:ltr;font-family:Google Sans, Roboto, Arial;color:#1F1F1F;padding-left:=
+20px;width:100%; vertical-align:top;text-align:left; line-height:24px;paddi=
+ng-top:4px;">Check options for improving data protection</td>
+</tr>
+</table></td></tr>=20
+
+
+
+
+
+
+
+<tr class=3Drisk_main><td style=3D"mso-padding-top-alt:16px;width:100%; max=
+-width:500px; margin: 0px;padding: 0px;">
+<table role=3Dpresentation cellpadding=3D0 cellspacing=3D0 role=3Dpresentat=
+ion class=3Dmob_landscape style=3D"font-size:16px;mso-padding-top-alt:16px;=
+mso-margin-top-alt:0px;width:100%; max-width:500px;background: #F0F4F9; mar=
+gin-top:16px; border-radius:16px; padding: 16px 16px 16px 23px; ">
+  <tr>
+
+
+  <td style=3D"width: 24px; border-radius: 50%; height: 24px; vertical-alig=
+n:middle;text-align:center;">
+    <table role=3Dpresentation class=3Dhigh_risk_bg cellpadding=3D0 cellspa=
+cing=3D0 style=3D"font-size:16px;mso-padding-top-alt:0px;mso-padding-bottom=
+-alt:0px;mso-padding-left-alt:0px;mso-padding-right-alt:5px;mso-margin-top-=
+alt:0px;width:100%; max-width:500px;background: #F0F4F9; margin-top:0px; bo=
+rder-radius:16px; padding: 0px; ">
+=20
+    <tr>
+      <td style=3D"width: 32px; border-radius: 50%; display: inline-block; =
+height: 32px; vertical-align:middle;text-align:center;">
+              <img src=3Dhttps://services.google.com/fh/files/emails/mid_sg=
+uard.png width=3D32 alt=3D"" style=3D"-ms-interpolation-mode:bicubic; outli=
+ne:none; text-decoration:none; padding-top:0px;">
+      </td></tr>
+    </table>
+  </td>
+
+<td dir=3Dltr class=3Ddynamic_point style=3D"mso-padding-left-alt:0px;direc=
+tion:ltr;font-family:Google Sans, Roboto, Arial;color:#1F1F1F;padding-left:=
+20px;width:100%; vertical-align:top;text-align:left;line-height:24px;paddin=
+g-top:4px;">Enhance app access protections</td>
+
+</tr>
+</table></td></tr>=20
+
+
+
+
+
+
+
+<tr class=3Drisk_main><td style=3D"mso-padding-top-alt:16px;width:100%; max=
+-width:500px; margin: 0px;padding: 0px;">
+<table role=3Dpresentation cellpadding=3D0 cellspacing=3D0 role=3Dpresentat=
+ion class=3Dmob_landscape style=3D"font-size:16px;mso-padding-top-alt:16px;=
+mso-margin-top-alt:0px;width:100%; max-width:500px;background: #F0F4F9; mar=
+gin-top:16px; border-radius:16px; padding: 16px 16px 16px 23px; ">
+  <tr>
+
+
+  <td style=3D"width: 24px; border-radius: 50%; height: 24px; vertical-alig=
+n:middle;text-align:center;">
+    <table role=3Dpresentation class=3Dhigh_risk_bg cellpadding=3D0 cellspa=
+cing=3D0 style=3D"font-size:16px;mso-padding-top-alt:0px;mso-padding-bottom=
+-alt:0px;mso-padding-left-alt:0px;mso-padding-right-alt:5px;mso-margin-top-=
+alt:0px;width:100%; max-width:500px;background: #F0F4F9; margin-top:0px; bo=
+rder-radius:16px; padding: 0px; ">
+=20
+    <tr>
+      <td style=3D"width: 32px; border-radius: 50%; display: inline-block; =
+height: 32px; vertical-align:middle;text-align:center;">
+              <img src=3Dhttps://services.google.com/fh/files/emails/mid_sg=
+uard.png width=3D32 alt=3D"" style=3D"-ms-interpolation-mode:bicubic; outli=
+ne:none; text-decoration:none; padding-top:0px;">
+      </td></tr>
+    </table>
+  </td>
+
+<td dir=3Dltr class=3Ddynamic_point style=3D"mso-padding-left-alt:0px;direc=
+tion:ltr;font-family:Google Sans, Roboto, Arial;color:#1F1F1F;padding-left:=
+20px;width:100%; vertical-align:top;text-align:left;line-height:24px;paddin=
+g-top:4px;">Improve account security</td>
+</tr>
+</table></td></tr>=20
+
+
+
+
+
+
+
+<tr class=3Drisk_main><td style=3D"mso-padding-top-alt:16px;width:100%; max=
+-width:500px; margin: 0px;padding: 0px;">
+<table role=3Dpresentation cellpadding=3D0 cellspacing=3D0 role=3Dpresentat=
+ion class=3Dmob_landscape style=3D"font-size:16px;mso-padding-top-alt:16px;=
+mso-margin-top-alt:0px;width:100%; max-width:500px;background: #F0F4F9; mar=
+gin-top:16px; border-radius:16px; padding: 16px 16px 16px 23px; ">
+  <tr>
+
+
+  <td style=3D"width: 24px; border-radius: 50%; height: 24px; vertical-alig=
+n:middle;text-align:center;">
+        <table role=3Dpresentation class=3Dhigh_risk_bg cellpadding=3D0 cel=
+lspacing=3D0 style=3D"font-size:16px;mso-padding-top-alt:0px;mso-padding-bo=
+ttom-alt:0px;mso-padding-left-alt:0px;mso-padding-right-alt:5px;mso-margin-=
+top-alt:0px;width:100%; max-width:500px;background: #F0F4F9; margin-top:0px=
+; border-radius:16px; padding: 0px; ">=20
+    <tr>
+      <td style=3D"width: 32px; border-radius: 50%; display: inline-block; =
+height: 32px; vertical-align:middle;text-align:center;">
+             <img src=3Dhttps://services.google.com/fh/files/emails/low_sgu=
+ard.png width=3D32 alt=3D"" style=3D"-ms-interpolation-mode:bicubic; outlin=
+e:none; text-decoration:none;padding-right:0px; padding-top:0px;">
+      </td></tr>
+    </table>
+  </td>
+
+<td dir=3Dltr class=3Ddynamic_point style=3D"mso-padding-left-alt:0px;direc=
+tion:ltr;font-family:Google Sans, Roboto, Arial;color:#1F1F1F;padding-left:=
+20px;width:100%; vertical-align:top;text-align:left;line-height:24px;paddin=
+g-top:4px;">All users turned on 2SV for their accounts</td>
+</tr>
+</table></td></tr>     =20
+       </table>
+    </td>
+  </tr>
+
+</table>
+    </td>
+  </tr>
+   =20
+
+
+
+  </table>
+  </td>
+</tr>
+
+=20
+
+
+<tr>
+   <td width=3D100% style=3Dborder-collapse:collapse;width:100%;>
+
+      <table role=3Dpresentation dir=3Dltr width=3D100% class=3Dcontent_wra=
+pper cellspacing=3D0 cellpadding=3D0 border=3D0 style=3D"-premailer-cellpad=
+ding:0; -premailer-cellspacing:0; border-collapse:collapse; font-family:Goo=
+gle Sans,Roboto,Arial; font-weight:normal; margin:0 auto; max-width:600px; =
+mso-table-lspace:0; mso-table-rspace:0; width:100%; background-color:#f8f9f=
+a;">
+         <tr>
+            <td style=3Dborder-collapse:collapse>
+               <table role=3Dpresentation width=3Dauto class=3Dlogo_holder =
+align=3Dcenter cellspacing=3D0 cellpadding=3D0 border=3D0 style=3D"-premail=
+er-cellpadding:0; -premailer-cellspacing:0; border-collapse:collapse; font-=
+family:Google Sans,Roboto,Arial;font-weight:500; mso-table-lspace:0; mso-ta=
+ble-rspace:0; width:auto">
+                  <tr>
+                     <td class=3Dfooter_wrapper_td style=3D"border-collapse=
+:collapse; padding-bottom:0px; padding-top:38px; padding-left:0px;">
+                        <img src=3Dhttp://services.google.com/fh/files/emai=
+ls/gw_header-logo.png width=3D184 alt=3D"Google Workspace" style=3D"-ms-int=
+erpolation-mode:bicubic; outline:none; text-decoration:none">
+                     </td>
+                  </tr>
+               </table>
+              =20
+            </td>
+         </tr>
+         <tr>
+                    =20
+ <td class=3Dfooter_wrapper_td style=3D"letter-spacing:0.3px;border-collaps=
+e:collapse; color:#5F6368; font-family:Google sans,Roboto,Arial; font-size:=
+12px; line-height:16px; padding:0px 66px 5px 50px; text-align:center; word-=
+break: normal;direction:ltr;">=20
+               Google LLC 1600 Amphitheatre Parkway, Mountain View, CA 9404=
+3
+            </td>
+         </tr>
+         <tr>
+            <td class=3Dfooter_wrapper_td style=3D"letter-spacing:0.3px;fon=
+t-size:12px;border-collapse:collapse; color:#5F6368; font-family:Google san=
+s,Roboto,Arial;font-weight:normal; line-height:16px; padding:22px 50px 50px=
+ 50px; padding-top:10px; text-align:center; word-break: normal;;direction:l=
+tr;">=20
+               This email was sent to you to share insights for improving y=
+our business' security. If you don't want to receive such emails in the fut=
+ure, you can update your <a href=3Dhttps://c.gle/ANnMTcZOUwHUZRdZF3th9h-dci=
+7TS6nfRbpKh7WEbSAyOxrqEK7MDfbhzbTeg0t_JadHo9jPdxLzZuKfe-baD5QwHpGogeHBOMf1N=
+TmgN-xCDryJ9_RLVqvnkomCdNUN71aYLSAF2IV69F1SegLjeXwMxuboLQ4J4F6EUWXqtInTvmnN=
+SyRlK1YAjzAEss6wvJiF_Q target=3D_blank style=3D"color:#1967D2; text-decorat=
+ion:underline; ">communication preference</a> in the Admin console.
+          =20
+            </td>
+         </tr>
+      </table>
+   </td>
+</tr>
+  =20
+=20
+	</table>
+</section>
+</div>
+
+
+
+=20
+</body>
+</html>
+=20
+
+--000000000000133a2f0645ee7179--
